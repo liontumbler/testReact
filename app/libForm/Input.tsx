@@ -10,6 +10,7 @@ interface inputProps {
     type: string
     title: string
     disabled: boolean
+    hidden?: boolean
     minLength: string
     maxLength: string
     placeholder?: string
@@ -27,7 +28,7 @@ interface modelInput {
     getValue: Function
 }
 
-export default forwardRef(({ loading = false, required = false, defaultValue = '', id, label, type, disabled, placeholder, inputRef, onChange, minLength, maxLength, min, max, title }: inputProps, ref) => {
+export default forwardRef(({ loading = false, required = false, defaultValue = '', id, label, type, disabled, hidden = false, placeholder, inputRef, onChange, minLength, maxLength, min, max, title }: inputProps, ref) => {
     const [internalValue, setInternalValue] = useState<string>(defaultValue);
     const [error, setError] = useState(false);
     const [helperText, setHelperText] = useState('');
@@ -90,11 +91,37 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
         showMsgValid(valid, msg)
         setInternalValue(newValue);
     }
+
+    const transformDataNumber = (newValue: string) => {
+        // Reemplaza todo lo que no sea número
+        // newValue = newValue.replace(/\D/g, '');
+        // newValue.replace(/[^0-9.]/g, '');
+
+        // Eliminar todo lo que no sea dígito, punto o signo negativo
+        newValue = newValue.replace(/[^0-9.-]/g, '');
+
+        // Asegurarse de que el signo negativo esté solo al inicio
+        newValue = newValue.replace(/(?!^)-/g, '');
+
+        // Mantener solo el primer punto
+        const parts = newValue.split('.');
+        if (parts.length > 1) {
+            newValue = parts.shift() + '.' + parts.join('');
+        }
+
+        // Evitar que inicie con punto
+        if (newValue.startsWith('.')) {
+            newValue = newValue.slice(1);
+        }
+    }
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value
+        let newValue = e.target.value;
+        if (type === 'number') {
+            transformDataNumber(newValue)
+        }
+
         validateAndChage(newValue, type)
-        
         onChange ? onChange(newValue) : null
     }
 
@@ -116,6 +143,7 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
             sx={{ borderRadius: 1 }}
         />
     ) : (
+        !hidden ? 
         <Tooltip title={title} arrow>
             <TextField
                 inputRef={inputRef}
@@ -139,7 +167,7 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
                     max: max,
                 }}
             />
-        </Tooltip>
+        </Tooltip> : null
     )
 })
 

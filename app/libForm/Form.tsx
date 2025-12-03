@@ -10,31 +10,29 @@ interface modelForm {
     getValues: Function
 }
 
-interface input {
+interface formProps {
     fields: Array<inputProps>
     service?: Function
     children?: React.ReactNode
 }
 
-export default forwardRef(({ fields, service, children }: input, ref) => {
+export default forwardRef(({ fields, service, children }: formProps, ref) => {
 
     const [disabled, setDisabled] = useState<boolean>(false);
     const [cargando, setCargando] = useState<boolean>(false);
     
     const buttonRef = useRef<HTMLButtonElement | null>(null);
-
     const refCampos = useRef<React.RefObject<modelInput | null>[]>([]);
+
     fields.forEach((field: inputProps, key: number) => {
         refCampos.current[key] = React.createRef<modelInput>();
     });
 
-    // useEffect(() => {
-    //     console.log(refCampos.current[0].current?.getValue(), 'ddd', refCampos.current[0].current?.validateField());
-    // }, []);
-
     const getValues = () => {
         const values = fields.map((field: inputProps, key: number) => {
-            return {[field.id]: refCampos.current[key].current?.getValue()}
+            if(!field.hidden){
+                return {[field.id]: refCampos.current[key].current?.getValue()}
+            }
         })
         return values;
     }
@@ -49,10 +47,12 @@ export default forwardRef(({ fields, service, children }: input, ref) => {
         }
 
         fields.forEach((field: any, key: number) => {
-            const {valid, msg} = refCampos.current[key].current?.validateField()
-            if(!valid) {
-                response.valid = false
-                response.fields.push(msg)
+            if (!field.hidden) {
+                const {valid, msg} = refCampos.current[key].current?.validateField()
+                if(!valid) {
+                    response.valid = false
+                    response.fields.push(msg)
+                }
             }
         });
 
@@ -82,8 +82,8 @@ export default forwardRef(({ fields, service, children }: input, ref) => {
         <form>
         {/* <form onSubmit={handleForm}> */}
             <Grid container spacing={2} >
-                {fields.map((field: any, key: number) => (
-                    <Grid size={{ xs: 12, sm: 12, md: 6 }} key={key}>
+                {fields.map((field: inputProps, key: number) => (
+                    (!field.hidden) ? <Grid size={{ xs: 12, sm: 12, md: 6 }} key={key}>
                         <Input
                             loading={cargando}
                             id={field.id}
@@ -98,7 +98,7 @@ export default forwardRef(({ fields, service, children }: input, ref) => {
                             disabled={field.disabled || disabled}
                             required={field.required}
                         />
-                    </Grid>
+                    </Grid> : null
                 ))}
                 
                 <Grid size={{ xs: 12, sm: 12, md: 12 }} justifySelf="center">
