@@ -1,7 +1,47 @@
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
+import { useRef, useState, useEffect } from 'react';
+
+import Form, { type modelForm }from "../libForm/Form";
 
 export function Welcome() {
+  const refForm = useRef<modelForm | null>(null);
+
+  let form = [
+    {
+        id: 'correo',
+        label: 'email',
+        type: 'email',
+        title: 'correo electronico',
+        placeholder: 'correo@dominio.com',
+        minLength: '3',
+        maxLength: '50',
+        //  defaultValue: 'lion_3214@hotmail.com',
+        disabled: false,
+        required: true,
+        hidden: true
+    },
+    {
+        id: 'correo2',
+        label: 'email2',
+        type: 'email',
+        title: 'correo electronico2',
+        placeholder: 'correo@dominio.com2',
+        minLength: '4',
+        maxLength: '52',
+        defaultValue: 'lion_3214@hotmail.com2',
+        disabled: false,
+        required: true,
+    }
+]
+
+  const handle = async (data: object) => {
+    console.log('edwin', data);
+    console.log(refForm.current?.validateFields());
+    console.log(refForm.current?.getValues());
+    await new Promise(resolve => setTimeout(resolve, 5000));
+  }
+
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -19,6 +59,13 @@ export function Welcome() {
             />
           </div>
         </header>
+
+        hola
+        <Form fields={form} ref={refForm} service={handle}>
+          {/* <button onClick={handle}>hola click</button> */}
+        </Form>
+        mundo
+
         <div className="max-w-[300px] w-full space-y-6 px-4">
           <nav className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
             <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
