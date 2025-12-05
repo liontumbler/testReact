@@ -2,7 +2,7 @@ import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'rea
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Skeleton from '@mui/material/Skeleton';
-import Input from '@mui/material/Input';
+import {type checkboxProps }from "../libForm/Checkbox";
 
 interface inputProps {
     id: string
@@ -21,6 +21,8 @@ interface inputProps {
     min?: string
     max?: string
     loading?: boolean;
+    size?: object
+    checkboxes?: Array<checkboxProps>
 }
 
 interface modelInput {

@@ -2,7 +2,7 @@ import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
 import { useRef, useState, useEffect } from 'react';
 
-import Form, { type modelForm }from "../libForm/Form";
+import Form, { type modelForm, type formProps }from "../libForm/Form";
 
 export function Welcome() {
   const refForm = useRef<modelForm | null>(null);
@@ -32,8 +32,27 @@ export function Welcome() {
         defaultValue: 'lion_3214@hotmail.com2',
         disabled: false,
         required: true,
+        size: { xs: 12, sm: 12, md: 12 }
+    },
+    {
+      type: 'checkbox',
+      checkboxes: [
+        {
+            id: 'correo2',
+            label: 'email2',
+            type: 'email',
+            title: 'correo electronico2',
+            placeholder: 'correo@dominio.com2',
+            minLength: '4',
+            maxLength: '52',
+            defaultValue: false,
+            disabled: false,
+            required: true,
+            size: { xs: 12, sm: 12, md: 12 }
+        },
+      ]
     }
-]
+  ]
 
   const handle = async (data: object) => {
     console.log('edwin', data);

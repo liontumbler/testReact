@@ -4,7 +4,7 @@ import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Skeleton from '@mui/material/Skeleton';
 
-interface input {
+interface checkboxProps {
     id: string
     label: string
     title: string
@@ -13,6 +13,8 @@ interface input {
     onChange?: Function
     required?: boolean
     loading?: boolean;
+    hidden?: boolean
+    size?: object
 }
 
 interface modelCheckbox {
@@ -20,11 +22,15 @@ interface modelCheckbox {
     getValue: Function
 }
 
-export default forwardRef(({ loading = false, required = false, defaultValue = false, id, label, disabled, onChange, title }: input, ref) => {
+export default forwardRef(({ loading = false, required = false, defaultValue = false, id, label, disabled, onChange, title }: checkboxProps, ref) => {
     const [internalValue, setInternalValue] = useState<boolean>(defaultValue);
+    const titleOriginal = title
+    const [titleDinamic, setTitleDinamic] = useState<string>(title);
+    const [error, setError] = useState(false);
 
     const validateField = () => {
         const val = validate(internalValue as any)
+        showMsgValid(val.valid, val.msg)
         return val
     }
 
@@ -46,7 +52,19 @@ export default forwardRef(({ loading = false, required = false, defaultValue = f
         }
     }
 
+    const showMsgValid = (valid: boolean, msg: string) => {
+        if (!valid) {
+            setError(true)
+            setTitleDinamic(msg)
+        } else {
+            setError(false)
+            setTitleDinamic(titleOriginal)
+        }
+    }
+
     const validateAndChage = (newValue: boolean) => {
+        const {valid, msg} = validate(newValue)
+        showMsgValid(valid, msg)
         setInternalValue(newValue);
     }
     
@@ -68,8 +86,14 @@ export default forwardRef(({ loading = false, required = false, defaultValue = f
             <Skeleton variant="text" width={100} height={24} />
         </div>
     ) : (
-        <Tooltip title={title} arrow>
+        <Tooltip title={titleDinamic} arrow>
             <FormControlLabel
+                sx={{
+                    // Cambia el color de la etiqueta según error
+                    '& .MuiFormControlLabel-label': {
+                        color: error ? 'red' : 'inherit',
+                    },
+                }}
                 control={
                     <Checkbox 
                         disabled={disabled}
@@ -86,4 +110,4 @@ export default forwardRef(({ loading = false, required = false, defaultValue = f
     )
 })
 
-export type {modelCheckbox};
+export type {modelCheckbox, checkboxProps};
