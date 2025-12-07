@@ -6,15 +6,13 @@ import FormControl from '@mui/material/FormControl';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Skeleton from '@mui/material/Skeleton';
 import Tooltip from '@mui/material/Tooltip';
-import { useTranslation } from "react-i18next";
-
 
 interface option {
-    name: string
+    label: string
     value: any
 }
 
-interface input {
+interface selectProps {
     id: string
     label: string
     title: string
@@ -27,17 +25,16 @@ interface input {
     loading?: boolean;
 }
 
-interface modelInput {
+interface modelSelect {
     validateField: Function
     getValue: Function
 }
 
-export default forwardRef(({ loading = false, required = false, defaultValue = '', id, label, disabled,  onChange, title, options }: input, ref) => {
+export default forwardRef(({ loading = false, required = false, defaultValue = '', id, label, disabled,  onChange, title, options }: selectProps, ref) => {
     // const [ready, setReady] = useState(false);
     // useEffect(() => setReady(true), []);
     // if (!ready) return null;
 
-    const { t } = useTranslation();
     const [internalValue, setInternalValue] = useState<string>(defaultValue);
     const [error, setError] = useState(false);
     const [helperText, setHelperText] = useState('');
@@ -57,8 +54,8 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
         let msg = ''
         if (value === '' && required) {
             valid = false
-            msg = `${t('theField')} ${label} ${t('isRequired')}`
-            //msg = `El campo ${label} es requerido`
+            msg = `El campo ${label} es requerido`
+            // msg = `${t('theField')} ${label} ${t('isRequired')}`
         }
 
         return {
@@ -103,24 +100,24 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
             sx={{ borderRadius: 1 }}
         />
     ) : (
-        <Tooltip title={t(title)} arrow>
-            <FormControl error={error} disabled={disabled} fullWidth>
-                <InputLabel id={`label-${id}`}>{t(label)}</InputLabel>
+        <Tooltip title={title} arrow>
+            <FormControl error={error} disabled={disabled} required={required} fullWidth>
+                <InputLabel id={`label-${id}`}>{label}</InputLabel>
                 <Select
                     labelId={`label-${id}`}
                     id={id}
                     name={id}
                     value={internalValue}
-                    label={t(label)}
+                    label={label}
                     onChange={handleChange}
                     renderValue={(value: any) => `⚠️  - ${value}`}
                 >
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
-                    {options.map((option: any, key: any) => {
+                    {options.map((option: option, key: number) => {
                         return (
-                            <MenuItem value={option.value} key={key}>{option.name}</MenuItem>
+                            <MenuItem value={option.value} key={key}>{option.label}</MenuItem>
                         )
                     })}
                 </Select>
@@ -130,5 +127,5 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
     )
 })
 
-export type {modelInput};
+export type {modelSelect, option};
 

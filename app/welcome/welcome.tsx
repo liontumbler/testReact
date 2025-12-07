@@ -1,6 +1,7 @@
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
 import { useRef, useState, useEffect } from 'react';
+import Container from '@mui/material/Container';
 
 import Form, { type modelForm, type formProps }from "../libForm/Form";
 
@@ -9,17 +10,40 @@ export function Welcome() {
 
   let form = [
     {
+        // row: true,
+        type: 'radio',
+        id: 123,
+        title: 'correo electronico',
+        //defaultValue: 'value 1',
+        required: true,
+        hidden: false,
+        radios: [
+          {
+            label: 'label 1',
+            disabled: true,
+            hidden: true,
+            value: 'value 1'
+          },
+          {
+            label: 'label 2',
+            disabled: false,
+            value: 'value 2'
+          }
+        ]
+    },
+    {
         id: 'correo',
         label: 'email',
-        type: 'email',
+        type: 'select',
         title: 'correo electronico',
-        placeholder: 'correo@dominio.com',
-        minLength: '3',
-        maxLength: '50',
-        //  defaultValue: 'lion_3214@hotmail.com',
+        //defaultValue: '1',
         disabled: false,
         required: true,
-        hidden: true
+        hidden: false,
+        size: { xs: 12, sm: 12, md: 12 },
+        options: [
+          {label: 'lavel 1', value: 1}
+        ]
     },
     {
         id: 'correo2',
@@ -42,10 +66,9 @@ export function Welcome() {
             label: 'email2',
             type: 'email',
             title: 'correo electronico2',
-            placeholder: 'correo@dominio.com2',
             minLength: '4',
             maxLength: '52',
-            defaultValue: false,
+            //defaultValue: true,
             disabled: false,
             required: true,
             size: { xs: 12, sm: 12, md: 12 }
@@ -54,6 +77,7 @@ export function Welcome() {
     }
   ]
 
+  const [formValue, setFormValue] = useState<Array<any>>(form);
   const handle = async (data: object) => {
     console.log('edwin', data);
     console.log(refForm.current?.validateFields());
@@ -80,9 +104,11 @@ export function Welcome() {
         </header>
 
         hola
-        <Form fields={form} ref={refForm} service={handle}>
-          {/* <button onClick={handle}>hola click</button> */}
-        </Form>
+        <Container maxWidth="sm">
+          <Form fields={formValue} ref={refForm} service={handle}>
+            {/* <button onClick={handle}>hola click</button> */}
+          </Form>
+        </Container>
         mundo
 
         <div className="max-w-[300px] w-full space-y-6 px-4">

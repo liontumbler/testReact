@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Skeleton from '@mui/material/Skeleton';
 import {type checkboxProps }from "../libForm/Checkbox";
+import {type option }from "../libForm/Select";
 
 interface inputProps {
     id: string
@@ -23,6 +24,9 @@ interface inputProps {
     loading?: boolean;
     size?: object
     checkboxes?: Array<checkboxProps>
+    options?: Array<option>
+    radios?: Array<any>
+    row?: boolean
 }
 
 interface modelInput {

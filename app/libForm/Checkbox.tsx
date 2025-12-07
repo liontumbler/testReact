@@ -82,7 +82,7 @@ export default forwardRef(({ loading = false, required = false, defaultValue = f
 
     return loading ? (
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <Skeleton variant="circular" width={24} height={24} />
+            <Skeleton variant="rectangular" width={24} height={24} />
             <Skeleton variant="text" width={100} height={24} />
         </div>
     ) : (
