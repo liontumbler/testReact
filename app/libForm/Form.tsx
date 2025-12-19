@@ -3,6 +3,7 @@ import React, { useRef, useState, forwardRef, useImperativeHandle, useEffect } f
 import Input, { type modelInput, type inputProps } from "../libForm/Input";
 import Select /*{ type modelSelect, type option }*/ from "../libForm/Select";
 import RadioGroup /*{ type modelSelect, type option }*/ from "../libForm/RadioGroup";
+import Signature /*{ type modelSelect, type option }*/ from "../libForm/Signature";
 import Button from "../libForm/Button";
 import CheckboxGroup /*{ type modelCheckbox, type checkboxProps }*/ from "../libForm/CheckboxGroup";
 
@@ -94,6 +95,10 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
         }
     }
 
+    const HandleSaveSignature = (data: any) => {
+        console.log('save', data);
+    }
+
     useImperativeHandle(ref, () => ({
         validateFields,
         getValues
@@ -104,6 +109,21 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
             {/* <form onSubmit={handleForm}> */}
             <Grid container spacing={2} >
                 {fields.map((field: inputProps, key: number) => (
+                    field.type == 'signature' ? 
+                        (!field.hidden) ? <Grid size={field.size ? field.size : { xs: 12, sm: 12, md: 6 }} key={key}>
+                            <Signature
+                                id={field.id}
+                                label={field.label}
+                                ref={refCampos.current[key]}
+                                loading={cargando}
+                                title={field.title}
+                                defaultValue={field.defaultValue}
+                                required={field.required}
+                                disabled={field.disabled || disabled}
+                                onHandleSave={HandleSaveSignature}
+                            />
+                        </Grid> : null
+                    :
                     field.type == 'radio' ? 
                         (!field.hidden) ? <Grid size={field.size ? field.size : { xs: 12, sm: 12, md: 6 }} key={key}>
                             <RadioGroup
@@ -169,6 +189,7 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
                                 loading={cargando}
                                 disabled={disabled}
                                 content={'title'}
+                                title={'enviar'}
                             /> : null
                         }
 

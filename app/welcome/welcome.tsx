@@ -10,6 +10,19 @@ export function Welcome() {
 
   let form = [
     {
+        id: 'signature',
+        label: 'firma',
+        type: 'signature',
+        title: 'correo electronico2',
+        placeholder: 'correo@dominio.com2',
+        minLength: '4',
+        maxLength: '52',
+        defaultValue: 'lion_3214@hotmail.com2',
+        disabled: false,
+        required: true,
+        size: { xs: 12, sm: 12, md: 12 }
+    },
+    {
         // row: true,
         type: 'radio',
         id: 123,
