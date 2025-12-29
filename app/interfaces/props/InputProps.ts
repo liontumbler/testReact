@@ -1,0 +1,27 @@
+import type { CheckboxProps } from '~/interfaces/props/CheckboxProps';
+import type { Option } from '~/interfaces/Option';
+
+export interface InputProps {
+    id: string
+    label: string
+    type: string
+    title: string
+    disabled: boolean
+    hidden?: boolean
+    minLength?: string
+    maxLength?: string
+    placeholder?: string
+    inputRef?: any
+    defaultValue?: string
+    onChange?: Function
+    required?: boolean
+    min?: string
+    max?: string
+    loading?: boolean;
+    size?: object
+    checkboxes?: Array<CheckboxProps>
+    options?: Array<Option>
+    radios?: Array<any>
+    row?: boolean
+    value?: any
+}

@@ -7,30 +7,10 @@ import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Skeleton from '@mui/material/Skeleton';
 import Tooltip from '@mui/material/Tooltip';
 
-interface option {
-    label: string
-    value: any
-}
+import type { Option } from '~/interfaces/Option';
+import type { SelectProps } from '~/interfaces/props/SelectProps';
 
-interface selectProps {
-    id: string
-    label: string
-    title: string
-    disabled: boolean
-    error?: boolean
-    defaultValue?: string
-    onChange?: Function
-    required?: boolean
-    options: Array<option>
-    loading?: boolean;
-}
-
-interface modelSelect {
-    validateField: Function
-    getValue: Function
-}
-
-export default forwardRef(({ loading = false, required = false, defaultValue = '', id, label, disabled,  onChange, title, options }: selectProps, ref) => {
+export default forwardRef(({ loading = false, required = false, defaultValue = '', id, label, disabled,  onChange, title, options }: SelectProps, ref) => {
     // const [ready, setReady] = useState(false);
     // useEffect(() => setReady(true), []);
     // if (!ready) return null;
@@ -115,7 +95,7 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
-                    {options.map((option: option, key: number) => {
+                    {options.map((option: Option, key: number) => {
                         return (
                             <MenuItem value={option.value} key={key}>{option.label}</MenuItem>
                         )
@@ -126,6 +106,4 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
         </Tooltip>
     )
 })
-
-export type {modelSelect, option};
 

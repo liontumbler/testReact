@@ -1,25 +1,23 @@
 import React, { useRef, useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import FormLabel from '@mui/material/FormLabel';
 import Skeleton from '@mui/material/Skeleton';
-import Checkbox, { type modelCheckbox, type checkboxProps }from "../libForm/Checkbox";
-
 import Grid from '@mui/material/Grid';
 
-interface checkboxes {
-    checkboxes: Array<checkboxProps>
-    loading?: boolean;
-    description?: string
-}
+import Checkbox from "../libForm/Checkbox";
 
-export default forwardRef(({checkboxes, loading, description} : checkboxes, ref) => {
+import type { CheckboxProps } from '~/interfaces/props/CheckboxProps';
+import type { ModelInput } from '~/interfaces/ModelInput';
+import type { Checkboxes } from '~/interfaces/Checkboxes';
+
+export default forwardRef(({checkboxes, loading, description} : Checkboxes, ref) => {
     const [error, setError] = useState(false);
-    const refCampos = useRef<React.RefObject<modelCheckbox | null>[]>([]);
-    checkboxes.forEach((field: checkboxProps, key: number) => {
-        refCampos.current[key] = React.createRef<modelCheckbox>();
+    const refCampos = useRef<React.RefObject<ModelInput | null>[]>([]);
+    checkboxes.forEach((field: CheckboxProps, key: number) => {
+        refCampos.current[key] = React.createRef<ModelInput>();
     });
 
     const getValue = () => {
-        const values = checkboxes.map((field: checkboxProps, key: number) => {
+        const values = checkboxes.map((field: CheckboxProps, key: number) => {
             if (!field.hidden) {
                 return { [field.id]: refCampos.current[key].current?.getValue() }
             }
@@ -78,7 +76,7 @@ export default forwardRef(({checkboxes, loading, description} : checkboxes, ref)
                     <br />
                 </FormLabel> : null
             }
-            {checkboxes.map((field: checkboxProps, key: number) => (
+            {checkboxes.map((field: CheckboxProps, key: number) => (
                 (!field.hidden) ? <Grid size={field.size ? field.size : { xs: 12, sm: 12, md: 6 }} key={key}>
                     <Checkbox
                         id={field.id}
