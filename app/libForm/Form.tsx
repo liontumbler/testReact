@@ -1,6 +1,8 @@
 import React, { useRef, useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 
-import Input, { type modelInput, type inputProps } from "../libForm/Input";
+import Grid from '@mui/material/Grid';
+
+import Input from "../libForm/Input";
 import Select /*{ type modelSelect, type option }*/ from "../libForm/Select";
 import RadioGroup /*{ type modelSelect, type option }*/ from "../libForm/RadioGroup";
 import Signature /*{ type modelSelect, type option }*/ from "../libForm/Signature";
@@ -10,18 +12,8 @@ import EnhancedTable /*{ type modelSelect, type option }*/ from "../libForm/Tabl
 import Button from "../libForm/Button";
 import CheckboxGroup /*{ type modelCheckbox, type checkboxProps }*/ from "../libForm/CheckboxGroup";
 
-import Grid from '@mui/material/Grid';
-
-interface modelForm {
-    validateFields: Function
-    getValues: Function
-}
-
-interface formProps {
-    fields: Array<any>//mirar
-    service?: Function
-    children?: React.ReactNode
-}
+import type { ModelInput } from '~/interfaces/ModelInput';
+import type { InputProps } from '~/interfaces/props/InputProps';
 
 export default forwardRef(({ fields, service, children }: formProps, ref) => {
 
@@ -29,14 +21,14 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
     const [cargando, setCargando] = useState<boolean>(false);
 
     const buttonRef = useRef<HTMLButtonElement | null>(null);
-    const refCampos = useRef<React.RefObject<modelInput | null>[]>([]);
+    const refCampos = useRef<React.RefObject<ModelInput | null>[]>([]);
 
-    fields.forEach((field: inputProps, key: number) => {
-        refCampos.current[key] = React.createRef<modelInput>();
+    fields.forEach((field: InputProps, key: number) => {
+        refCampos.current[key] = React.createRef<ModelInput>();
     });
 
     const getValues = () => {        
-        const values = fields.map((field: inputProps, key: number) => {
+        const values = fields.map((field: InputProps, key: number) => {
             if (!field.hidden) {
                 if (field.type === 'checkbox') {
                     if (field.checkboxes) {
@@ -111,7 +103,7 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
         <form>
             {/* <form onSubmit={handleForm}> */}
             <Grid container spacing={2} >
-                {fields.map((field: inputProps, key: number) => (
+                { fields.map((field: InputProps, key: number) => (
                     field.type == 'file' ? 
                         (!field.hidden) ? <Grid size={field.size ? field.size : { xs: 12, sm: 12, md: 6 }} key={key}>
                             <File
@@ -219,5 +211,3 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
         </form>
     )
 })
-
-export type { modelForm, formProps };

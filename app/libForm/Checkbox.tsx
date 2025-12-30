@@ -3,26 +3,9 @@ import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Skeleton from '@mui/material/Skeleton';
+import type { CheckboxProps } from '~/interfaces/props/CheckboxProps';
 
-interface checkboxProps {
-    id: string
-    label: string
-    title: string
-    disabled: boolean
-    defaultValue?: boolean
-    onChange?: Function
-    required?: boolean
-    loading?: boolean;
-    hidden?: boolean
-    size?: object
-}
-
-interface modelCheckbox {
-    validateField: Function
-    getValue: Function
-}
-
-export default forwardRef(({ loading = false, required = false, defaultValue = false, id, label, disabled, onChange, title }: checkboxProps, ref) => {
+export default forwardRef(({ loading = false, required = false, defaultValue = false, id, label, disabled, onChange, title }: CheckboxProps, ref) => {
     const [internalValue, setInternalValue] = useState<boolean>(defaultValue);
     const titleOriginal = title
     const [titleDinamic, setTitleDinamic] = useState<string>(title);
@@ -110,4 +93,4 @@ export default forwardRef(({ loading = false, required = false, defaultValue = f
     )
 })
 
-export type {modelCheckbox, checkboxProps};
+export type {CheckboxProps};

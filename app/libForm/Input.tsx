@@ -2,40 +2,10 @@ import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'rea
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Skeleton from '@mui/material/Skeleton';
-import {type checkboxProps }from "../libForm/Checkbox";
-import {type option }from "../libForm/Select";
 
-interface inputProps {
-    id: string
-    label: string
-    type: string
-    title: string
-    disabled: boolean
-    hidden?: boolean
-    minLength: string
-    maxLength: string
-    placeholder?: string
-    inputRef?: any
-    defaultValue?: any
-    onChange?: Function
-    required?: boolean
-    min?: string
-    max?: string
-    loading?: boolean;
-    size?: object
-    checkboxes?: Array<checkboxProps>
-    options?: Array<option>
-    radios?: Array<any>
-    row?: boolean
-    fileTypes?: Array<'JPEG' | 'PNG' | 'GIF'>
-}
+import type { InputProps } from '~/interfaces/props/InputProps';
 
-interface modelInput {
-    validateField: Function
-    getValue: Function
-}
-
-export default forwardRef(({ loading = false, required = false, defaultValue = '', id, label, type, disabled, hidden = false, placeholder, inputRef, onChange, minLength, maxLength, min, max, title }: inputProps, ref) => {
+export default forwardRef(({ loading = false, required = false, defaultValue = '', id, label, type, disabled, hidden = false, placeholder, inputRef, onChange, minLength, maxLength, min, max, title }: InputProps, ref) => {
     const [internalValue, setInternalValue] = useState<string>(defaultValue);
     const [error, setError] = useState(false);
     const [helperText, setHelperText] = useState('');
@@ -177,6 +147,4 @@ export default forwardRef(({ loading = false, required = false, defaultValue = '
         </Tooltip> : null
     )
 })
-
-export type {modelInput, inputProps};
 

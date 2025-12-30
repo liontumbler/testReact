@@ -3,10 +3,12 @@ import logoLight from "./logo-light.svg";
 import { useRef, useState, useEffect } from 'react';
 import Container from '@mui/material/Container';
 
-import Form, { type modelForm, type formProps }from "../libForm/Form";
+import Form from "../libForm/Form";
+
+import type { ModelForm } from '~/interfaces/ModelForm';
 
 export function Welcome() {
-  const refForm = useRef<modelForm | null>(null);
+  const refForm = useRef<ModelForm | null>(null);
 
   let form = [
     {

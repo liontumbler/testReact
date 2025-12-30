@@ -7,27 +7,9 @@ import FormLabel from '@mui/material/FormLabel';
 import Tooltip from '@mui/material/Tooltip';
 import Skeleton from '@mui/material/Skeleton';
 
-interface radioProps {
-    id: string
-    label: string
-    disabled: boolean
-    onChange?: Function
-    hidden?: boolean
-    value: string
-}
+import type { RadioProps } from '~/interfaces/props/RadioProps';
 
-interface radios {
-    radios: Array<radioProps>
-    defaultValue?: string
-    onChange?: Function
-    required?: boolean
-    description: string
-    row?: boolean
-    loading?: boolean;
-    hidden?: boolean
-}
-
-export default forwardRef(({loading = false, radios, defaultValue = '', onChange, required, description, row=false} : radios, ref) => {
+export default forwardRef(({loading = false, radios, defaultValue = '', onChange, required, description, row=false} : RadioProps, ref) => {
     const [internalValue, setInternalValue] = useState<string>(defaultValue);
     const [rowValue, setRowValue] = useState<boolean>(row);
     const titleOriginal = description
