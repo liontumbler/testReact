@@ -8,11 +8,11 @@ export interface InputProps {
     title: string
     disabled: boolean
     hidden?: boolean
-    minLength?: string
-    maxLength?: string
+    minLength?: number
+    maxLength?: number
     placeholder?: string
     inputRef?: any
-    defaultValue?: string
+    defaultValue?: any
     onChange?: Function
     required?: boolean
     min?: string
@@ -24,4 +24,5 @@ export interface InputProps {
     radios?: Array<any>
     row?: boolean
     value?: any
+    fileTypes?: Array<'JPEG' | 'PNG' | 'GIF'>
 }
