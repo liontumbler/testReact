@@ -4,6 +4,9 @@ import Input, { type modelInput, type inputProps } from "../libForm/Input";
 import Select /*{ type modelSelect, type option }*/ from "../libForm/Select";
 import RadioGroup /*{ type modelSelect, type option }*/ from "../libForm/RadioGroup";
 import Signature /*{ type modelSelect, type option }*/ from "../libForm/Signature";
+import File /*{ type modelSelect, type option }*/ from "../libForm/File";
+import EnhancedTable /*{ type modelSelect, type option }*/ from "../libForm/Table";
+
 import Button from "../libForm/Button";
 import CheckboxGroup /*{ type modelCheckbox, type checkboxProps }*/ from "../libForm/CheckboxGroup";
 
@@ -109,6 +112,21 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
             {/* <form onSubmit={handleForm}> */}
             <Grid container spacing={2} >
                 {fields.map((field: inputProps, key: number) => (
+                    field.type == 'file' ? 
+                        (!field.hidden) ? <Grid size={field.size ? field.size : { xs: 12, sm: 12, md: 6 }} key={key}>
+                            <File
+                                id={field.id}
+                                label={field.label}
+                                ref={refCampos.current[key]}
+                                loading={cargando}
+                                title={field.title}
+                                defaultValue={field.defaultValue}
+                                required={field.required}
+                                disabled={field.disabled || disabled}
+                                fileTypes={field.fileTypes ?? ["JPEG", "PNG", "GIF"]}
+                            />
+                        </Grid> : null
+                    :
                     field.type == 'signature' ? 
                         (!field.hidden) ? <Grid size={field.size ? field.size : { xs: 12, sm: 12, md: 6 }} key={key}>
                             <Signature
@@ -197,6 +215,7 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
                     </Grid> : null
                 }
             </Grid>
+            <EnhancedTable/>
         </form>
     )
 })

@@ -12,6 +12,16 @@ export function Welcome() {
     {
         id: 'signature',
         label: 'firma',
+        type: 'file',
+        title: 'correo electronico2',
+        defaultValue: 'lion_3214@hotmail.com2',
+        disabled: false,
+        required: true,
+        size: { xs: 12, sm: 12, md: 12 }
+    },
+    {
+        id: 'signature',
+        label: 'firma',
         type: 'signature',
         title: 'correo electronico2',
         placeholder: 'correo@dominio.com2',

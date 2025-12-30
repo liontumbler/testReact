@@ -2,6 +2,8 @@ import React, { useRef, useState, forwardRef, useImperativeHandle, useEffect } f
 import Signature, { type SignatureRef } from '@uiw/react-signature';
 import Button from "../libForm/Button";
 import FormLabel from '@mui/material/FormLabel';
+import Tooltip from '@mui/material/Tooltip';
+import Skeleton from '@mui/material/Skeleton';
 
 interface signatureProps {
     id: string
@@ -118,48 +120,58 @@ export default forwardRef(({ onHandleSave, loading = false, required = false, de
         getValue
     }));
 
-    return (
-        <div style={{position: 'relative'}}>
-            <FormLabel
-                sx={{
-                    color: error ? 'red' : 'inherit',
-                }}
-            >
-                {titleDinamic}{required ? '*' : null}
-            </FormLabel>
-            <Signature 
-                ref={$svg} 
-                readonly={disabled || disableSignature} 
-                defaultPoints={points} 
-                fill={color} 
-                style={ { "--w-signature-background": "#e4e6ef" } as React.CSSProperties } 
-                onPointer={handlePoints}
-            />
-            {points && !save ? 
-                <Button
-                    refInput={buttonRef}
-                    type="button"
-                    onClick={handleClear}
-                    loading={loading}
-                    disabled={disabled || disableSignature}
-                    content={'Clear'}
-                    color="error"
-                    title='Limpia la firma'
-                /> : null
-            }
-            {points ? 
-                <Button
-                    style={{ float: "right" }}
-                    refInput={buttonRef}
-                    type="button"
-                    onClick={handleSave}
-                    loading={loading}
-                    disabled={disabled || disableSignature}
-                    content={'Save'}
-                    title='Guarda la firma'
-                /> : null
-            }
-        </div>
+    return loading ? (
+        <Skeleton
+            variant="rectangular"
+            width="100%"
+            height={150} // alto típico de un TextField
+            sx={{ borderRadius: 1 }}
+        />
+    ) : (
+        !hidden ? 
+        <Tooltip title={title} arrow>
+            <div style={{position: 'relative'}}>
+                <FormLabel
+                    sx={{
+                        color: error ? 'red' : 'inherit',
+                    }}
+                >
+                    {titleDinamic}{required ? '*' : null}
+                </FormLabel>
+                <Signature 
+                    ref={$svg} 
+                    readonly={disabled || disableSignature} 
+                    defaultPoints={points} 
+                    fill={color} 
+                    style={ { "--w-signature-background": "#e4e6ef" } as React.CSSProperties } 
+                    onPointer={handlePoints}
+                />
+                {points && !save ? 
+                    <Button
+                        refInput={buttonRef}
+                        type="button"
+                        onClick={handleClear}
+                        loading={loading}
+                        disabled={disabled || disableSignature}
+                        content={'Clear'}
+                        color="error"
+                        title='Limpia la firma'
+                    /> : null
+                }
+                {points ? 
+                    <Button
+                        style={{ float: "right" }}
+                        refInput={buttonRef}
+                        type="button"
+                        onClick={handleSave}
+                        loading={loading}
+                        disabled={disabled || disableSignature}
+                        content={'Save'}
+                        title='Guarda la firma'
+                    /> : null
+                }
+            </div>
+        </Tooltip> : null
     );
 })
 

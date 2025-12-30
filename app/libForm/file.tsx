@@ -4,7 +4,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Tooltip from '@mui/material/Tooltip';
 import FormLabel from '@mui/material/FormLabel';
 
-import "./styles.css";
+//import "./styles.css";
 
 // const fileTypes = ["JPEG", "PNG", "GIF"];
 
@@ -77,10 +77,12 @@ export default forwardRef(({ loading = false, required = false, defaultValue = n
 
     const handleError = (err: any) => {
         console.log(err)
+        validateAndChage([])
     }
 
     const handleErrorSize = (file: any) => {
         console.log(file)
+        validateAndChage([])
     }
 
     return loading ? (
@@ -94,7 +96,11 @@ export default forwardRef(({ loading = false, required = false, defaultValue = n
         !hidden ? 
         <Tooltip title={title} arrow>
             <div>
-                <label>{label}</label>
+                <label
+                    style={{
+                        color: error ? 'red' : 'inherit',
+                    }}
+                >{label}{required ? '*' : null}</label>
                 <FileUploader
                     multiple={true}
                     handleChange={handleChange}
@@ -107,9 +113,8 @@ export default forwardRef(({ loading = false, required = false, defaultValue = n
                     hoverTitle={placeholder}
                     maxSize={maxSize}
                     minSize={minSize}
+                    classes={'w-100'}
                 />
-                <p>{file ? `File name: ${file[0].name}` : "no files uploaded yet"}</p>
-
                 <FormLabel id={id}
                     sx={{
                         color: error ? 'red' : 'inherit',

@@ -16,7 +16,7 @@ interface inputProps {
     maxLength: string
     placeholder?: string
     inputRef?: any
-    defaultValue?: string
+    defaultValue?: any
     onChange?: Function
     required?: boolean
     min?: string
@@ -27,6 +27,7 @@ interface inputProps {
     options?: Array<option>
     radios?: Array<any>
     row?: boolean
+    fileTypes?: Array<'JPEG' | 'PNG' | 'GIF'>
 }
 
 interface modelInput {
