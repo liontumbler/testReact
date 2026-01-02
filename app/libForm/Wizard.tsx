@@ -10,17 +10,18 @@ interface step {
     title: string
     component: any
     optional: boolean
+    props?: any
 }
 
 interface wizardProps {
     steps: Array<step>
-    loading: boolean
+    loading?: boolean
 }
 
 // const steps: Array<step> = [
 //     {
 //         title: 'step 1',
-//         component: 'content 1',
+//         component: Button,
 //         optional: true
 //     },
 //     {
@@ -33,7 +34,16 @@ interface wizardProps {
 export default forwardRef(({ loading = false, steps }: wizardProps, ref) => {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set<number>());
-    const [contentView, setContentView] = useState(steps[0].component);
+
+    const stepAux = steps.map((step: any) => {
+        step['valid'] = true
+        return step
+    })
+
+    const [newStep, setNewStep] = useState(stepAux);//<React.ElementType | string>
+
+    const [ContentView, setContentView] = useState(steps[0].component);
+    const [propsView, setPropsView] = useState(steps[0].props);
 
     const isStepOptional = (step: number) => {
         return steps[step].optional;
@@ -55,9 +65,16 @@ export default forwardRef(({ loading = false, steps }: wizardProps, ref) => {
             newSkipped.delete(activeStep);
         }
 
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped(newSkipped);
-        setContentView(steps[(activeStep + 1)].component)
+        const nextStep = (activeStep + 1)
+
+        console.log('paso', activeStep , newStep[activeStep]);
+        if (newStep[activeStep].valid == true) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setSkipped(newSkipped);
+            setContentView(steps[(activeStep + 1)].component)
+        } else {
+            alert('valiodar paso' + nextStep)
+        }
     };
 
     const handleSkip = () => {
@@ -82,7 +99,7 @@ export default forwardRef(({ loading = false, steps }: wizardProps, ref) => {
     return (
         <Box sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep}>
-                {steps.map((step, index) => {
+                {newStep.map((step, index) => {
                     const stepProps: { completed?: boolean } = {};
                     const labelProps: {
                         optional?: React.ReactNode;
@@ -102,7 +119,7 @@ export default forwardRef(({ loading = false, steps }: wizardProps, ref) => {
                     );
                 })}
             </Stepper>
-            {activeStep === steps.length ? (
+            {activeStep === newStep.length ? (
                 <React.Fragment>
                     <Typography sx={{ mt: 2, mb: 1 }}>
                         All steps completed - you&apos;re finished
@@ -116,7 +133,10 @@ export default forwardRef(({ loading = false, steps }: wizardProps, ref) => {
                 <React.Fragment>
                     <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
                     <div>
-                        {contentView}
+                        {  typeof ContentView === 'string' ?
+                            ContentView :
+                            <ContentView {...propsView}/>
+                        }
                     </div>
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                         <Button
@@ -134,7 +154,7 @@ export default forwardRef(({ loading = false, steps }: wizardProps, ref) => {
                             </Button>
                         )}
                         <Button onClick={handleNext}>
-                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                            {activeStep === newStep.length - 1 ? 'Finish' : 'Next'}
                         </Button>
                     </Box>
                 </React.Fragment>

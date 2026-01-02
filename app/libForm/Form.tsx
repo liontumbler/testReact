@@ -3,11 +3,12 @@ import React, { useRef, useState, forwardRef, useImperativeHandle, useEffect } f
 import Grid from '@mui/material/Grid';
 
 import Input from "../libForm/Input";
-import Select /*{ type modelSelect, type option }*/ from "../libForm/Select";
-import RadioGroup /*{ type modelSelect, type option }*/ from "../libForm/RadioGroup";
-import Signature /*{ type modelSelect, type option }*/ from "../libForm/Signature";
-import File /*{ type modelSelect, type option }*/ from "../libForm/File";
-import EnhancedTable /*{ type modelSelect, type option }*/ from "../libForm/Table";
+import Select from "../libForm/Select";
+import RadioGroup from "../libForm/RadioGroup";
+import Signature from "../libForm/Signature";
+import File from "../libForm/File";
+import EnhancedTable from "../libForm/Table";
+import Wizard from "../libForm/Wizard";
 
 import Button from "../libForm/Button";
 import CheckboxGroup /*{ type modelCheckbox, type checkboxProps }*/ from "../libForm/CheckboxGroup";
@@ -208,6 +209,25 @@ export default forwardRef(({ fields, service, children }: formProps, ref) => {
                 }
             </Grid>
             <EnhancedTable/>
+            <Wizard
+                steps={[
+                    {
+                        title: 'step 1',
+                        component: Button,
+                        optional: false
+                    },
+                    {
+                        title: 'step 2',
+                        component: 'content 2',
+                        optional: true
+                    },
+                    {
+                        title: 'step 3',
+                        component: 'content 3',
+                        optional: false
+                    }
+                ]}
+            />
         </form>
     )
 })

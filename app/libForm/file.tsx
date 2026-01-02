@@ -85,6 +85,11 @@ export default forwardRef(({ loading = false, required = false, defaultValue = n
         validateAndChage([])
     }
 
+    useImperativeHandle(ref, () => ({
+        validateField,
+        getValue
+    }));
+
     return loading ? (
         <Skeleton
             variant="rectangular"
